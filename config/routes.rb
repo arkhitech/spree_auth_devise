@@ -35,7 +35,7 @@ Spree::Core::Engine.add_routes do
                :class_name => 'Spree::User',
                :controllers => { :sessions => 'spree/admin/user_sessions',
                                  :passwords => 'spree/admin/user_passwords' },
-               :skip => [:unlocks, :omniauth_callbacks, :registrations],
+               :skip => [:unlocks, :omniauth_callbacks, :registrations, :confirmable],
                :path_names => { :sign_out => 'logout' },
                :path_prefix => :user
     devise_scope :spree_user do
