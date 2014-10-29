@@ -1,6 +1,7 @@
 class Spree::UserPasswordsController < Devise::PasswordsController
   helper 'spree/base', 'spree/store'
-
+ protect_from_forgery with: :null_session, if: Proc.new { |c| c.request.format == 'application/json' }
+ 
   if Spree::Auth::Engine.dash_available?
     helper 'spree/analytics'
   end
@@ -8,11 +9,14 @@ class Spree::UserPasswordsController < Devise::PasswordsController
   include Spree::Core::ControllerHelpers::Auth
   include Spree::Core::ControllerHelpers::Common
   include Spree::Core::ControllerHelpers::Order
-  include Spree::Core::ControllerHelpers::SSL
   include Spree::Core::ControllerHelpers::Store
 
-  ssl_required
+  
+     force_ssl if: :ssl_configured?
 
+    def ssl_configured?
+      !Rails.env.development?
+    end  
   # Overridden due to bug in Devise.
   #   respond_with resource, :location => new_session_path(resource_name)
   # is generating bad url /session/new.user
@@ -24,10 +28,49 @@ class Spree::UserPasswordsController < Devise::PasswordsController
     self.resource = resource_class.send_reset_password_instructions(params[resource_name])
 
     if resource.errors.empty?
-      set_flash_message(:notice, :send_instructions) if is_navigational_format?
-      respond_with resource, :location => spree.login_path
+      @user=resource
+      respond_to do |format|
+        format.html {
+          set_flash_message(:notice, :send_instructions) if is_navigational_format?
+          respond_with resource, :location => spree.login_path
+        }
+        format.js {
+          api_key=@user.spree_api_key
+          if api_key.nil?
+            @user.generate_spree_api_key!
+            api_key=@user.spree_api_key
+          end
+          render :json => {:user => @user
+            
+          }
+        }
+        format.json {
+          api_key=@user.spree_api_key
+          if api_key.nil?
+            @user.generate_spree_api_key!
+            api_key=@user.spree_api_key
+          end
+          render :json => {:user => @user
+            
+          }
+        }
+      end
     else
-      respond_with_navigational(resource) { render :new }
+      respond_to do |format|
+        format.html {
+          respond_with_navigational(resource) { render :new }
+        }
+        format.js {
+          
+            render :json => { error: resource.errors.messages }, status: :unprocessable_entity
+         
+        }
+        format.json {
+          
+            render :json => { error: resource.errors.messages }, status: :unprocessable_entity
+         
+        }
+      end
     end
   end
 
