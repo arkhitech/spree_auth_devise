@@ -46,6 +46,8 @@ module Spree
             Rails.configuration.cache_classes ? require(c) : load(c)
           end
         end
+        Spree::BaseController.send :include, Spree::AuthenticationHelpers
+        Spree::Api::BaseController.send :include, Spree::AuthenticationHelpers
         ApplicationController.send :include, Spree::AuthenticationHelpers
       end
 

@@ -1,9 +1,6 @@
-# Spree Auth (Devise)
+# Spree Auth (Devise) - With Confirmation Emails!
 
-[![Build Status](https://travis-ci.org/spree/spree_auth_devise.svg?branch=master)](https://travis-ci.org/spree/spree_auth_devise)
-[![Code Climate](https://codeclimate.com/github/spree/spree_auth_devise/badges/gpa.svg)](https://codeclimate.com/github/spree/spree_auth_devise)
-
-Provides authentication services for Spree, using the Devise gem.
+Provides authentication services for Spree, using the Devise gem.On js format login request, an api key is also generated and on js format logout request, the api key is cleared out.
 
 
 ## Installation

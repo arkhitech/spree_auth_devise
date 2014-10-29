@@ -49,7 +49,8 @@ Devise.setup do |config|
   # You can use this to let your user access some features of your application
   # without confirming the account, but blocking it after a certain period
   # (ie 2 days).
-  # config.confirm_within = 2.days
+#  config.confirm_within = 5.days
+  config.allow_unconfirmed_access_for = 5.days
 
   # ==> Configuration for :rememberable
   # The time the user will be remembered without asking for credentials again.
@@ -140,4 +141,10 @@ Devise.setup do |config|
   config.reconfirmable = false
   config.skip_session_storage = []
   config.strip_whitespace_keys = []
+  
+  require File.expand_path('../../../lib/custom_failure_app.rb', __FILE__)
+  
+  config.warden do |manager|
+    manager.failure_app = CustomFailureApp
+  end  
 end

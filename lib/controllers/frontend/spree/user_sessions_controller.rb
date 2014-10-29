@@ -5,10 +5,10 @@ class Spree::UserSessionsController < Devise::SessionsController
   include Spree::Core::ControllerHelpers::Common
   include Spree::Core::ControllerHelpers::Order
   include Spree::Core::ControllerHelpers::Store
+  
 
   def create
     authenticate_spree_user!
-
     if spree_user_signed_in?
       respond_to do |format|
         format.html {
@@ -16,9 +16,21 @@ class Spree::UserSessionsController < Devise::SessionsController
           redirect_back_or_default(after_sign_in_path_for(spree_current_user))
         }
         format.js {
-          render json: { user: spree_current_user,
-                           ship_address: spree_current_user.ship_address,
-                           bill_address: spree_current_user.bill_address }.to_json
+          api_key=spree_current_user.spree_api_key
+          unless api_key
+            spree_current_user.generate_spree_api_key!
+            api_key=spree_current_user.spree_api_key
+          end
+          render json: spree_current_user
+        
+        }
+        format.json {
+          api_key=spree_current_user.spree_api_key
+          if api_key.nil?
+            spree_current_user.generate_spree_api_key!
+            api_key=spree_current_user.spree_api_key
+          end
+           render json: spree_current_user
         }
       end
     else
@@ -29,6 +41,9 @@ class Spree::UserSessionsController < Devise::SessionsController
         }
         format.js {
           render json: { error: t('devise.failure.invalid') }, status: :unprocessable_entity
+        }
+        format.json {
+          render :json => { error: t('devise.failure.invalid') }, status: :unprocessable_entity
         }
       end
     end
