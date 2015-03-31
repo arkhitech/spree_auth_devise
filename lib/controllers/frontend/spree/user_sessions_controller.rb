@@ -22,7 +22,7 @@ class Spree::UserSessionsController < Devise::SessionsController
           flash[:success] = Spree.t(:logged_in_succesfully)
           redirect_back_or_default(after_sign_in_path_for(spree_current_user))
         }
-        format.js {
+        format.json {
           render :json => {:user => spree_current_user,
                            :ship_address => spree_current_user.ship_address,
                            :bill_address => spree_current_user.bill_address}.to_json
@@ -34,7 +34,7 @@ class Spree::UserSessionsController < Devise::SessionsController
           flash.now[:error] = t('devise.failure.invalid')
           render :new
         }
-        format.js {
+        format.json {
           render :json => { error: t('devise.failure.invalid') }, status: :unprocessable_entity
         }
       end
