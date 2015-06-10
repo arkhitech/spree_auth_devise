@@ -1,5 +1,20 @@
 class Spree::UserConfirmationsController < Devise::ConfirmationsController
  
+  helper 'spree/base', 'spree/store'
+ protect_from_forgery with: :null_session, if: Proc.new { |c| c.request.format == 'application/json' }
+ 
+  if Spree::Auth::Engine.dash_available?
+    helper 'spree/analytics'
+  end
+
+  include Spree::Core::ControllerHelpers::Auth
+  include Spree::Core::ControllerHelpers::Common
+  include Spree::Core::ControllerHelpers::Order
+  include Spree::Core::ControllerHelpers::SSL
+  include Spree::Core::ControllerHelpers::Store
+
+  ssl_required
+
   # GET /resource/confirmation/new
   def new
     self.resource = resource_class.new
