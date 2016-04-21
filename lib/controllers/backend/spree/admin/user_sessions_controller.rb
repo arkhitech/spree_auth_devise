@@ -40,6 +40,12 @@ class Spree::Admin::UserSessionsController < Devise::SessionsController
     'devise.user_sessions'
   end
 
+  protected
+
+  def translation_scope
+    'devise.user_sessions'
+  end
+
   private
 
   def accurate_title
