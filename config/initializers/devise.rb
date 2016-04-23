@@ -147,4 +147,11 @@ Devise.setup do |config|
   config.warden do |manager|
     manager.failure_app = CustomFailureApp
   end  
+
+  # keep old config
+  config.email_regexp = /\A[^@\s]+@([^@\s]+\.)+[^@\W]+\z/
+  config.reconfirmable = false
+  config.skip_session_storage = []
+  config.strip_whitespace_keys = []
+
 end
