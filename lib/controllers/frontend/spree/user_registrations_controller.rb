@@ -6,7 +6,7 @@ class Spree::UserRegistrationsController < Devise::RegistrationsController
   include Spree::Core::ControllerHelpers::Order
   include Spree::Core::ControllerHelpers::Store
 
-  before_action :check_permissions, :only => [:edit, :update]
+  before_action :check_permissions, only: [:edit, :update]
   skip_before_action :require_no_authentication
 
     # GET /resource/sign_up
