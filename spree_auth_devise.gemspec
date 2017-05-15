@@ -22,8 +22,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'devise', '~> 4.4.0'
   s.add_dependency 'devise-encryptable', '0.2.0'
 
-  spree_version = '>= 3.3.1'
-
+  spree_version = '>= 3.2.0', '< 4.0'
   s.add_dependency 'spree_core', spree_version
   s.add_dependency 'spree_extension'
 
@@ -45,9 +44,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'spree_backend', spree_version
   s.add_development_dependency 'spree_frontend', spree_version
   s.add_development_dependency 'sqlite3'
-<<<<<<< 8fe26fad8312cfab719e33555ab4951d9b23c0fb
-  s.add_development_dependency 'appraisal'
-=======
   s.add_development_dependency 'rails-controller-testing'
->>>>>>> Spree 3.2 and Rails 5 support (#370)
 end
