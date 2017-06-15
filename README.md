@@ -13,7 +13,7 @@ Provides authentication services for Spree, using the Devise gem.On js format lo
   #### Spree >= 3.1
 
   ```ruby
-  gem 'spree_auth_devise', '~> 3.3'
+  gem 'spree_auth_devise', github: 'arkhitech/spree_auth_devise'
   ```
 
   #### Spree 3.0 and Spree 2.x
