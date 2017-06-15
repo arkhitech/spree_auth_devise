@@ -21,8 +21,9 @@ class Spree::UserSessionsController < Devise::SessionsController
             spree_current_user.generate_spree_api_key!
             api_key=spree_current_user.spree_api_key
           end
-          render json: spree_current_user
-        
+          render json: { user: spree_current_user,
+                           ship_address: spree_current_user.ship_address,
+                           bill_address: spree_current_user.bill_address }.to_json        
         }
         format.json {
           api_key=spree_current_user.spree_api_key
@@ -30,7 +31,7 @@ class Spree::UserSessionsController < Devise::SessionsController
             spree_current_user.generate_spree_api_key!
             api_key=spree_current_user.spree_api_key
           end
-           render json: spree_current_user
+          render json: spree_current_user
         }
       end
     else
