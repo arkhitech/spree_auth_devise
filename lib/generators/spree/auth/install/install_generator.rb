@@ -9,7 +9,7 @@ module Spree
         end
 
         def add_javascripts
-          append_file 'vendor/assets/javascripts/spree/frontend/all.js', "//= require spree/frontend/spree_auth\n"
+          append_file 'vendor/assets/javascripts/spree/frontend/all.coffee', "#= require spree/frontend/spree_auth\n"
         end
 
         def generate_devise_key
